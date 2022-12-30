@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<rxui:ReactiveContentPage
+        xmlns="http://xamarin.com/schemas/2014/forms"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+        xmlns:vm="clr-namespace:Hands.ViewModels"
+        x:Class="Hands.Views.SettingsPage"
+        x:TypeArguments="vm:SettingsViewModel"
+        Title="Settings"
+  >
+    <StackLayout>
+        <Entry x:Name="TheEntry" />
+        <Label x:Name="TheLabel" />
+    </StackLayout>
+</rxui:ReactiveContentPage>
