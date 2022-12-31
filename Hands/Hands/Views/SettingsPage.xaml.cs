@@ -2,6 +2,8 @@
 using ReactiveUI;
 using ReactiveUI.XamForms;
 using Hands.ViewModels;
+using Hands.Models;
+using System;
 
 namespace Hands.Views
 {
@@ -10,16 +12,16 @@ namespace Hands.Views
         public SettingsPage()
         {
             InitializeComponent();
-
             ViewModel = new SettingsViewModel();
+            BindingContext = ViewModel;
+        }
 
-            this.WhenActivated(disposable =>
-            {
-                this.Bind(ViewModel, x => x.Text, x => x.TheEntry.Text)
-                    .DisposeWith(disposable);
-                this.OneWayBind(ViewModel, vm => vm.Text, x => x.TheLabel.Text)
-                    .DisposeWith(disposable);
-            });
+        private string GetNotificationText(NotificationSetting notification)
+        {
+            Console.WriteLine("Hmm", notification);
+            if (notification == NotificationSetting.EveryMorning) return "Every Morning";
+            if (notification == NotificationSetting.EveryEvening) return "Every Evening";
+            return "None";
         }
     }
 }

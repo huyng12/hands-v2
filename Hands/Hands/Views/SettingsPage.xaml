@@ -6,10 +6,33 @@
         xmlns:vm="clr-namespace:Hands.ViewModels"
         x:Class="Hands.Views.SettingsPage"
         x:TypeArguments="vm:SettingsViewModel"
+        x:DataType="vm:SettingsViewModel"
         Title="Settings"
   >
     <StackLayout>
-        <Entry x:Name="TheEntry" />
-        <Label x:Name="TheLabel" />
+        <TableView HasUnevenRows="True" Intent="Settings">
+            <TableRoot>
+                <TableSection Title="Preferences">
+                    <TextCell StyleId="disclosure" x:Name="SetupNotifications"
+                              Text="Notifications" Detail="{Binding Settings.Notification}" />
+                    <TextCell StyleId="disclosure" x:Name="SetupAccounts" Text="Accounts" />
+                    <TextCell StyleId="disclosure" x:Name="SetupCategories" Text="Categories" />
+                </TableSection>
+
+                <TableSection Title="About">
+                    <TextCell Text="Name" Detail="Hands" />
+                    <TextCell Text="Version" Detail="0.0.1" />
+                    <TextCell Text="Class" Detail="IE307.N13.CNCL" />
+                    <TextCell Text="Author" Detail="Nguyen Minh Huy" />
+                    <TextCell Text="Author" Detail="Nguyen Ba Quoc" />
+                    <TextCell Text="Author" Detail="Pham Hong Anh" />
+                </TableSection>
+
+                <TableSection>
+                    <TextCell StyleId="button-like" x:Name="ResetSettings"
+                              Text="Reset Settings" Command="{Binding ResetSettingsCommand}" />
+                </TableSection>
+            </TableRoot>
+        </TableView>
     </StackLayout>
 </rxui:ReactiveContentPage>

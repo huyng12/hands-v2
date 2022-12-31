@@ -15,14 +15,15 @@
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
                 <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.ForegroundColor" Value="White" />
-                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.ForegroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TitleColor" Value="{StaticResource Black}" />
                 <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
                 <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Gray}" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource Gray}" />
+                <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Black}" />
             </Style>
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
             <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
@@ -30,8 +31,21 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Stats" ContentTemplate="{DataTemplate local:StatsPage}" />
-        <ShellContent Title="Settings" ContentTemplate="{DataTemplate local:SettingsPage}" />
+        <ShellContent Title="Transactions" ContentTemplate="{DataTemplate local:EntryPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FAFreeSolid" Glyph="" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Report" ContentTemplate="{DataTemplate local:StatsPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FAFreeSolid" Glyph="" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Settings" ContentTemplate="{DataTemplate local:SettingsPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FAFreeSolid" Glyph="" Size="20" />
+            </ShellContent.Icon>
+        </ShellContent>
     </TabBar>
 
     <!--

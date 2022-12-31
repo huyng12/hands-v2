@@ -7,20 +7,24 @@
     -->
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="Primary">#FFF</Color>
+            <Color x:Key="Gray">#A8A8B2</Color>
+            <Color x:Key="Black">#191927</Color>
+            <Color x:Key="Blue">#0E7AFE</Color>
+
             <Style TargetType="Button">
-                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="TextColor" Value="{StaticResource Black}"></Setter>
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Black}" />
                                 </VisualState.Setters>
                             </VisualState>
                             <VisualState x:Name="Disabled">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#332196F3" />
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Black}" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
@@ -30,4 +34,3 @@
         </ResourceDictionary>        
     </Application.Resources>
 </Application>
-

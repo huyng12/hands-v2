@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using Akavache;
+using Xamarin.Forms;
+using Hands.Services;
 
 namespace Hands
 {
@@ -6,6 +8,10 @@ namespace Hands
     {
         public App()
         {
+            Akavache.Registrations.Start("Hands");
+
+            DependencyService.Register<ISettingsService, SettingService>();
+
             InitializeComponent();
 
             MainPage = new AppShell();

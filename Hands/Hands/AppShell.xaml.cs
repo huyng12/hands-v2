@@ -8,9 +8,9 @@ namespace Hands
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(EntryPage), typeof(EntryPage));
             Routing.RegisterRoute(nameof(StatsPage), typeof(StatsPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
         }
-
     }
 }

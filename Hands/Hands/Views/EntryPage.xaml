@@ -4,10 +4,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
         xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
         xmlns:vm="clr-namespace:Hands.ViewModels"
-        x:Class="Hands.Views.StatsPage"
-        x:TypeArguments="vm:StatsViewModel"
-        Title="Report">
+        x:Class="Hands.Views.EntryPage"
+        x:TypeArguments="vm:EntryViewModel"
+        Title="Transactions">
     <StackLayout>
-        <Label Text="Stats page"/>
+        <Label Text="Entry page"/>
     </StackLayout>
 </rxui:ReactiveContentPage>
