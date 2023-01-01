@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Hands.Services;
 using Hands.Models;
+using DynamicData.Binding;
 
 namespace Hands.ViewModels
 {
@@ -23,6 +24,7 @@ namespace Hands.ViewModels
             disposable = service.ConnectAccountsSetting()
                 .RefCount()
                 .ObserveOn(RxApp.MainThreadScheduler)
+                .Sort(SortExpressionComparer<TAccount>.Ascending(v => v.Name))
                 .Bind(out items)
                 .DisposeMany()
                 .Subscribe();
