@@ -14,9 +14,11 @@
             <TableRoot>
                 <TableSection Title="Preferences">
                     <TextCell StyleId="disclosure" x:Name="SetupNotifications"
-                              Text="Notifications" Detail="{Binding Settings.Notification}" />
-                    <TextCell StyleId="disclosure" x:Name="SetupAccounts" Text="Accounts" />
-                    <TextCell StyleId="disclosure" x:Name="SetupCategories" Text="Categories" />
+                              Text="Notifications" Detail="{Binding NotificationSetting}" />
+                    <TextCell StyleId="disclosure" x:Name="SetupAccounts"
+                              Text="Accounts" Command="{Binding GoToAccountsSettingCommand}" />
+                    <TextCell StyleId="disclosure" x:Name="SetupCategories"
+                              Text="Categories" Command="{Binding GoToCategoriesSettingCommand}" />
                 </TableSection>
 
                 <TableSection Title="About">
@@ -30,7 +32,7 @@
 
                 <TableSection>
                     <TextCell StyleId="button-like" x:Name="ResetSettings"
-                              Text="Reset Settings" Command="{Binding ResetSettingsCommand}" />
+                              Text="Reset Settings" Command="{Binding ResetNotificationSettingCommand}" />
                 </TableSection>
             </TableRoot>
         </TableView>

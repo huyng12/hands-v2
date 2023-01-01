@@ -1,43 +1,67 @@
 ﻿using ReactiveUI;
 using Xamarin.Forms;
+using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 using Hands.Services;
 using Hands.Models;
-using System;
-using Newtonsoft.Json;
+using Hands.Views;
+using Splat;
 
 namespace Hands.ViewModels
 {
     public class SettingsViewModel : ReactiveObject
     {
+        readonly INavigation navigationService;
+
         private readonly ISettingsService service;
 
-        ObservableAsPropertyHelper<TSettings> settings;
-        public TSettings Settings => settings.Value;
-
-        public ReactiveCommand<Unit, Unit> ResetSettingsCommand { get; set; }
-
-        public SettingsViewModel()
+        public SettingsViewModel(INavigation navigation)
         {
-            service = DependencyService.Get<ISettingsService>();
-            SetupObservables();
+            navigationService = navigation;
+
+            service = Locator.Current.GetService<ISettingsService>();
+
+            notificationSetting = service.GetNotificationSettingObservable()
+                .ToProperty(this, nameof(NotificationSetting));
+
+            FetchNotificationSettingCommand = ReactiveCommand.Create(ExecuteFetchNotificationSettingCommand);
+            ResetNotificationSettingCommand = ReactiveCommand.Create(ExecuteResetNotificationSettingCommand);
+            GoToCategoriesSettingCommand = ReactiveCommand.Create(ExecuteGoToCategoriesSettingCommand);
+            GoToAccountsSettingCommand = ReactiveCommand.Create(ExecuteGoToAccountsSettingCommand);
         }
 
-        private void SetupObservables()
-        {
-            settings = service.GetSettingsObservable()
-                .ToProperty(this, vm => vm.Settings);
+        public ReactiveCommand<Unit, Unit> FetchNotificationSettingCommand { get; set; }
 
-            ResetSettingsCommand = ReactiveCommand
-                .Create(ExecuteResetSettingsCommand);
+        public ReactiveCommand<Unit, Unit> ResetNotificationSettingCommand { get; set; }
+
+        public ReactiveCommand<Unit, Unit> GoToCategoriesSettingCommand { get; set; }
+
+        public ReactiveCommand<Unit, Unit> GoToAccountsSettingCommand { get; set; }
+
+        ObservableAsPropertyHelper<NotificationSetting> notificationSetting;
+        public NotificationSetting NotificationSetting
+            => notificationSetting.Value;
+
+        private void ExecuteFetchNotificationSettingCommand()
+        {
+            notificationSetting = service.GetNotificationSettingObservable()
+                .ToProperty(this, nameof(NotificationSetting));
         }
 
-        private void ExecuteResetSettingsCommand()
+        private void ExecuteResetNotificationSettingCommand()
         {
-            service.ResetSettingsObservable()
-                .ToProperty(this, vm => vm.Settings, out settings);
+            notificationSetting = service.ResetNotificationSettingObservable()
+                .DistinctUntilChanged()
+                .ToProperty(this, nameof(NotificationSetting));
         }
+
+        private async void ExecuteGoToCategoriesSettingCommand()
+            => await Shell.Current.Navigation.PushAsync(new SettingsCategoriesPage());
+
+        private async void ExecuteGoToAccountsSettingCommand()
+            => await Shell.Current.Navigation.PushAsync(new SettingsAccountsPage());
     }
 }

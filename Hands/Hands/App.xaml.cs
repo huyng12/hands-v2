@@ -1,6 +1,10 @@
 ﻿using Akavache;
+using ReactiveUI;
+using Splat;
 using Xamarin.Forms;
 using Hands.Services;
+using Hands.Views;
+using Hands.ViewModels;
 
 namespace Hands
 {
@@ -10,9 +14,11 @@ namespace Hands
         {
             Akavache.Registrations.Start("Hands");
 
-            DependencyService.Register<ISettingsService, SettingService>();
-
             InitializeComponent();
+
+            Locator
+                .CurrentMutable
+                .RegisterConstant<ISettingsService>(new SettingService());
 
             MainPage = new AppShell();
         }

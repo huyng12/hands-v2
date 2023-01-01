@@ -15,10 +15,10 @@
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
                 <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.ForegroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor" Value="{StaticResource Blue}" />
                 <Setter Property="Shell.TitleColor" Value="{StaticResource Black}" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.DisabledColor" Value="{StaticResource Blue}" />
+                <Setter Property="Shell.UnselectedColor" Value="{StaticResource Blue}" />
 
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Gray}" />

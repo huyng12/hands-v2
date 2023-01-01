@@ -2,7 +2,7 @@
 
 namespace Hands.Models
 {
-    public class Account
+    public class TAccount
     {
         public string Id { get; set; }
         public string Name { get; set; }

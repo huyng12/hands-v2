@@ -144,6 +144,9 @@
     <PackageReference Include="akavache">
       <Version>9.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Splat">
+      <Version>14.6.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>

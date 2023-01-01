@@ -4,7 +4,7 @@ namespace Hands.Models
 {
     public enum CategoryType { Income, Expense };
 
-    public class Category
+    public class TCategory
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<rxui:ReactiveContentPage
+        xmlns="http://xamarin.com/schemas/2014/forms"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+        xmlns:vm="clr-namespace:Hands.ViewModels"
+        xmlns:models="clr-namespace:Hands.Models"
+        x:Class="Hands.Views.SettingsAccountsPage"
+        x:TypeArguments="vm:SettingsAccountsViewModel"
+        x:DataType="vm:SettingsAccountsViewModel"
+        Title="Accounts">
+
+    <ContentPage.BindingContext>
+        <vm:SettingsAccountsViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="New" Command="{Binding AddCommand,Mode=OneTime}"/>
+    </ContentPage.ToolbarItems>
+
+    <ListView x:Name="ListViewItems" ItemsSource="{Binding Items}">
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="models:TAccount">
+                <TextCell Text="{Binding Name}">
+                    <TextCell.ContextActions>
+                        <MenuItem
+                            Text="Edit"
+                            CommandParameter="{Binding .}"
+                            Command="{Binding Source={x:Reference ListViewItems}, Path=BindingContext.EditCommand}" />
+                        <MenuItem
+                            Text="Delete"
+                            IsDestructive="True"
+                            CommandParameter="{Binding .}"
+                            Command="{Binding Source={x:Reference ListViewItems}, Path=BindingContext.DeleteCommand}" />
+                    </TextCell.ContextActions>
+                </TextCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</rxui:ReactiveContentPage>

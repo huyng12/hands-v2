@@ -5,13 +5,13 @@
         xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
         xmlns:vm="clr-namespace:Hands.ViewModels"
         xmlns:models="clr-namespace:Hands.Models"
-        x:Class="Hands.Views.SettingsAccountsPage"
-        x:TypeArguments="vm:SettingsAccountsViewModel"
-        x:DataType="vm:SettingsAccountsViewModel"
-        Title="Accounts">
+        x:Class="Hands.Views.SettingsCategoriesPage"
+        x:TypeArguments="vm:SettingsCategoriesViewModel"
+        x:DataType="vm:SettingsCategoriesViewModel"
+        Title="Categories">
     <ListView ItemsSource="{Binding Items}">
         <ListView.ItemTemplate>
-            <DataTemplate x:DataType="models:TAccount">
+            <DataTemplate x:DataType="models:TCategory">
                 <TextCell Text="{Binding Name}" />
             </DataTemplate>
         </ListView.ItemTemplate>

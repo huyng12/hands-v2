@@ -6,13 +6,13 @@ using Hands.ViewModels;
 
 namespace Hands.Views
 {
-    public partial class SettingsCategoriesPage : ReactiveContentPage<SettingsCategoriesViewModel>
+    public partial class SettingsAccountsPage : ReactiveContentPage<SettingsAccountsViewModel>
     {
-        public SettingsCategoriesPage()
+        public SettingsAccountsPage()
         {
             InitializeComponent();
 
-            ViewModel = new SettingsCategoriesViewModel();
+            ViewModel = new SettingsAccountsViewModel();
 
             BindingContext = ViewModel;
         }

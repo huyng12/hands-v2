@@ -11,6 +11,7 @@
     <PackageReference Include="ReactiveUI" Version="18.4.1" />
     <PackageReference Include="ReactiveUI.XamForms" Version="18.4.1" />
     <PackageReference Include="akavache" Version="9.0.1" />
+    <PackageReference Include="Splat" Version="14.6.1" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="ReactiveUI" />
@@ -20,6 +21,8 @@
     <None Remove="Resources\" />
     <None Remove="Resources\FontAwesome\" />
     <None Remove="akavache" />
+    <None Remove="Sextant.XamForms" />
+    <None Remove="Splat" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
