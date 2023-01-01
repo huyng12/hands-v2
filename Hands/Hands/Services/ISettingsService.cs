@@ -21,9 +21,9 @@ namespace Hands.Services
         // Categories Setting
         IObservable<IChangeSet<TCategory, string>> ConnectCategoriesSetting();
         IObservable<List<TCategory>> GetCategoriesSettingObservable();
-        //void AddNewCategory(string name, CategoryType type);
-        //void RemoveCategory(TCategory category);
-        //void UpdateCategory(TCategory category);
+        void AddNewCategory(string name, string type);
+        void RemoveCategory(TCategory category);
+        void UpdateCategory(TCategory category);
 
         // Accounts Setting
         IObservable<IChangeSet<TAccount, string>> ConnectAccountsSetting();

@@ -101,6 +101,16 @@ namespace Hands.Services
                 categoriesStoreKey,
                 () => ServiceConsts.defaultSettings.Categories);
         }
+
+        public void AddNewCategory(string name, string type)
+            => categoriesSetting
+            .AddOrUpdate(new TCategory { Id = Guid.NewGuid().ToString(), Name = name, Type = type });
+
+        public void RemoveCategory(TCategory category)
+            => categoriesSetting.Remove(category);
+
+        public void UpdateCategory(TCategory category)
+            => categoriesSetting.AddOrUpdate(category);
         #endregion
 
         #region Accounts Setting

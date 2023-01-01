@@ -9,11 +9,53 @@
         x:TypeArguments="vm:SettingsCategoriesViewModel"
         x:DataType="vm:SettingsCategoriesViewModel"
         Title="Categories">
-    <ListView ItemsSource="{Binding Items}">
-        <ListView.ItemTemplate>
-            <DataTemplate x:DataType="models:TCategory">
-                <TextCell Text="{Binding Name}" />
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+
+    <ContentPage.BindingContext>
+        <vm:SettingsCategoriesViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="New" Command="{Binding AddCommand,Mode=OneTime}"/>
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+        <StackLayout Padding="20,20,20,10">
+            <Label FontSize="Medium" FontAttributes="Bold" Text="Category" />
+            <Picker SelectedItem="{Binding SelectedCategoryType}">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Expense</x:String>
+                        <x:String>Income</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <StackLayout Padding="10,0,0,0">
+                <Label TextColor="DimGray" FontSize="Micro" FontAttributes="Bold" Text="Tips" />
+                <Label TextColor="DimGray" FontSize="Micro" Text="Expense categories for outgoing transactions." />
+                <Label TextColor="DimGray" FontSize="Micro" Text="Income categories for incoming transactions." />
+            </StackLayout>
+        </StackLayout>
+
+        <BoxView HeightRequest="5" Color="LightGray" Margin="0,0,0,0" />
+
+        <ListView x:Name="ListViewItems" ItemsSource="{Binding Items}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:TCategory">
+                    <TextCell Text="{Binding Name}">
+                        <TextCell.ContextActions>
+                            <MenuItem
+                                Text="Edit"
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference ListViewItems}, Path=BindingContext.EditCommand}" />
+                            <MenuItem
+                                Text="Delete"
+                                IsDestructive="True"
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Source={x:Reference ListViewItems}, Path=BindingContext.DeleteCommand}" />
+                        </TextCell.ContextActions>
+                    </TextCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
 </rxui:ReactiveContentPage>
