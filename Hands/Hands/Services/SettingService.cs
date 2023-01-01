@@ -33,31 +33,58 @@ namespace Hands.Services
             this.accountsSetting
                 .Connect()
                 .ObserveOn(RxApp.TaskpoolScheduler)
-                .Throttle(TimeSpan.FromMilliseconds(1000))
+                .Throttle(TimeSpan.FromMilliseconds(500))
                 .Select(_ => this.accountsSetting.Items)
                 .Do(async (accounts) => await store
                     .InsertObject<IEnumerable<TAccount>>(accountsStoreKey, accounts))
                 .Subscribe();
+
+            this.categoriesSetting
+                .Connect()
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Throttle(TimeSpan.FromMilliseconds(500))
+                .Select(_ => this.categoriesSetting.Items)
+                .Do(async (categories) => await store
+                    .InsertObject<IEnumerable<TCategory>>(categoriesStoreKey, categories))
+                .Subscribe();
+        }
+
+        public async Task ResetSettingAsync()
+        {
+            await store.InsertObject<string>(notificationStoreKey,
+                ServiceConsts.defaultSettings.Notification);
+
+            accountsSetting.Edit((setting) =>
+            {
+                setting.Clear();
+                setting.AddOrUpdate(ServiceConsts.defaultSettings.Accounts);
+            });
+
+            categoriesSetting.Edit(setting =>
+            {
+                setting.Clear();
+                setting.AddOrUpdate(ServiceConsts.defaultSettings.Categories);
+            });
         }
 
         #region Notification Setting
-        public IObservable<NotificationSetting> GetNotificationSettingObservable()
+        public IObservable<string> GetNotificationSettingObservable()
         {
-            return store.GetOrCreateObject<NotificationSetting>(
+            return store.GetOrCreateObject<string>(
                 notificationStoreKey,
                 () => ServiceConsts.defaultSettings.Notification);
         }
 
-        public IObservable<NotificationSetting> ResetNotificationSettingObservable()
+        public IObservable<string> ResetNotificationSettingObservable()
         {
             return this.UpdateNotificationSettingObservable(
                 ServiceConsts.defaultSettings.Notification);
         }
 
-        public IObservable<NotificationSetting> UpdateNotificationSettingObservable(NotificationSetting notificationSetting)
+        public IObservable<string> UpdateNotificationSettingObservable(string notificationSetting)
         {
             return store
-                .InsertObject<NotificationSetting>(notificationStoreKey, notificationSetting)
+                .InsertObject<string>(notificationStoreKey, notificationSetting)
                 .Select(_ => notificationSetting);
         }
         #endregion

@@ -9,11 +9,14 @@ namespace Hands.Services
 {
     public interface ISettingsService
     {
+        // Common
+        Task ResetSettingAsync();
+
         // Notification Setting
-        IObservable<NotificationSetting> GetNotificationSettingObservable();
-        IObservable<NotificationSetting> ResetNotificationSettingObservable();
-        IObservable<NotificationSetting> UpdateNotificationSettingObservable(
-            NotificationSetting notificationSetting);
+        IObservable<string> GetNotificationSettingObservable();
+        IObservable<string> ResetNotificationSettingObservable();
+        IObservable<string> UpdateNotificationSettingObservable(
+            string notificationSetting);
 
         // Categories Setting
         IObservable<IChangeSet<TCategory, string>> ConnectCategoriesSetting();

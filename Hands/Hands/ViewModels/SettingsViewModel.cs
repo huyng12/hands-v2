@@ -28,7 +28,7 @@ namespace Hands.ViewModels
                 .ToProperty(this, nameof(NotificationSetting));
 
             FetchNotificationSettingCommand = ReactiveCommand.Create(ExecuteFetchNotificationSettingCommand);
-            ResetNotificationSettingCommand = ReactiveCommand.Create(ExecuteResetNotificationSettingCommand);
+            ResetNotificationSettingCommand = ReactiveCommand.CreateFromTask(ExecuteResetNotificationSettingCommand);
             GoToCategoriesSettingCommand = ReactiveCommand.Create(ExecuteGoToCategoriesSettingCommand);
             GoToAccountsSettingCommand = ReactiveCommand.Create(ExecuteGoToAccountsSettingCommand);
         }
@@ -41,8 +41,8 @@ namespace Hands.ViewModels
 
         public ReactiveCommand<Unit, Unit> GoToAccountsSettingCommand { get; set; }
 
-        ObservableAsPropertyHelper<NotificationSetting> notificationSetting;
-        public NotificationSetting NotificationSetting
+        ObservableAsPropertyHelper<string> notificationSetting;
+        public string NotificationSetting
             => notificationSetting.Value;
 
         private void ExecuteFetchNotificationSettingCommand()
@@ -51,10 +51,10 @@ namespace Hands.ViewModels
                 .ToProperty(this, nameof(NotificationSetting));
         }
 
-        private void ExecuteResetNotificationSettingCommand()
+        private async Task ExecuteResetNotificationSettingCommand()
         {
-            notificationSetting = service.ResetNotificationSettingObservable()
-                .DistinctUntilChanged()
+            await service.ResetSettingAsync();
+            notificationSetting = service.GetNotificationSettingObservable()
                 .ToProperty(this, nameof(NotificationSetting));
         }
 
