@@ -7,6 +7,16 @@
         x:Class="Hands.Views.EntryPage"
         x:TypeArguments="vm:EntryViewModel"
         Title="Transactions">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding AddCommand,Mode=OneTime}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FAProSolid" Glyph=""
+                                 Size="22" Color="{StaticResource Black}" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <StackLayout>
         <Label Text="Entry page"/>
     </StackLayout>

@@ -10,8 +10,8 @@ namespace Hands.Services
         {
             Notification = NotificationSetting.EveryMorning,
             Accounts = new List<TAccount> {
-                new TAccount{ Id = Guid.NewGuid().ToString(), Name = "Cash" },
-                new TAccount{ Id = Guid.NewGuid().ToString(), Name = "Credit Card" },
+                new TAccount{ Id = Guid.NewGuid().ToString(), Name = "💰 Cash" },
+                new TAccount{ Id = Guid.NewGuid().ToString(), Name = "💳 Credit Card" },
             },
             Categories = new List<TCategory> {
                 // Incomes

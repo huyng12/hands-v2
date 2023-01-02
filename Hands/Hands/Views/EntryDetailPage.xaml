@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<rxui:ReactiveContentPage
+        xmlns="http://xamarin.com/schemas/2014/forms"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+        xmlns:controls="clr-namespace:Hands.Controls"
+        xmlns:vm="clr-namespace:Hands.ViewModels"
+        x:Class="Hands.Views.EntryDetailPage"
+        x:TypeArguments="vm:EntryDetailViewModel"
+        Title="Expense">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Done" Command="{Binding DoneCommand,Mode=OneTime}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="*, Auto, Auto, Auto, Auto" ColumnDefinitions="*">
+        <StackLayout Grid.Row="0" Orientation="Horizontal" HorizontalOptions="Center">
+            <Label Text="{Binding AmountStr}" FontSize="40" HorizontalOptions="Center" VerticalOptions="Center" />
+            <Label Text="₫" TextColor="DimGray" FontSize="30" VerticalOptions="Center" />
+        </StackLayout>
+
+        <BoxView Grid.Row="1" HeightRequest="0.6" Color="LightGray" />
+
+        <Grid Grid.Row="2" RowDefinitions="Auto" ColumnDefinitions="*, Auto, *"
+              ColumnSpacing="20" Padding="20, 5, 20, 5">
+            <controls:BorderlessPicker Grid.Column="0" Title="Accounts" HorizontalTextAlignment="Center"
+                    ItemsSource="{Binding Accounts}" ItemDisplayBinding="{Binding Name}" />
+
+            <Label Grid.Column="1" Text="" FontFamily="FAProRegular" FontSize="Medium"
+                   TextColor="DimGray" VerticalOptions="Center" HorizontalOptions="Center" />
+
+            <controls:BorderlessPicker Grid.Column="2" Title="Categories" HorizontalTextAlignment="Center"
+                    ItemsSource="{Binding Categories}" ItemDisplayBinding="{Binding Name}" />
+        </Grid>
+
+        <BoxView Grid.Row="3" HeightRequest="0.6" Color="LightGray" />
+
+        <StackLayout x:Name="NumericKeyboard" Grid.Row="4" Padding="20,0,20,20" />
+    </Grid>
+
+</rxui:ReactiveContentPage>
