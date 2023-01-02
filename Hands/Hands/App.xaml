@@ -9,6 +9,7 @@
         <ResourceDictionary>
             <Color x:Key="Primary">#FFF</Color>
             <Color x:Key="Gray">#A8A8B2</Color>
+            <Color x:Key="LightGray">#F2F1F6</Color>
             <Color x:Key="Black">#191927</Color>
             <Color x:Key="Blue">#0E7AFE</Color>
 

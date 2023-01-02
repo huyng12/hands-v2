@@ -15,12 +15,17 @@
     </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="New" Command="{Binding AddCommand,Mode=OneTime}"/>
+        <ToolbarItem Command="{Binding AddCommand,Mode=OneTime}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FAProRegular" Glyph="" Size="22" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <StackLayout>
         <StackLayout Padding="20,20,20,10">
-            <Label FontSize="Medium" FontAttributes="Bold" Text="Category" />
+            <Label TextTransform="Uppercase" TextColor="DimGray"
+                   FontSize="Small" Text="Type of category" Margin="5,0,0,0" />
             <Picker SelectedItem="{Binding SelectedCategoryType}">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
@@ -29,14 +34,11 @@
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
-            <StackLayout Padding="10,0,0,0">
-                <Label TextColor="DimGray" FontSize="Micro" FontAttributes="Bold" Text="Tips" />
-                <Label TextColor="DimGray" FontSize="Micro" Text="Expense categories for outgoing transactions." />
-                <Label TextColor="DimGray" FontSize="Micro" Text="Income categories for incoming transactions." />
-            </StackLayout>
+            <Label TextColor="DimGray" FontSize="Micro" Margin="8,0,0,0"
+                   Text="Using Expense and Income to separately category outgoing and incoming transactions." />
         </StackLayout>
 
-        <BoxView HeightRequest="5" Color="LightGray" Margin="0,0,0,0" />
+        <BoxView HeightRequest="0.6" Color="LightGray" Margin="0,0,0,-6" />
 
         <ListView x:Name="ListViewItems" ItemsSource="{Binding Items}">
             <ListView.ItemTemplate>

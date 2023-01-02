@@ -15,7 +15,11 @@
     </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="New" Command="{Binding AddCommand,Mode=OneTime}"/>
+        <ToolbarItem Command="{Binding AddCommand,Mode=OneTime}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FAProRegular" Glyph="" Size="22" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <ListView x:Name="ListViewItems" ItemsSource="{Binding Items}">
