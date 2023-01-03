@@ -16,9 +16,8 @@ namespace Hands
 
             InitializeComponent();
 
-            Locator
-                .CurrentMutable
-                .RegisterConstant<ISettingsService>(new SettingService());
+            Locator.CurrentMutable.RegisterConstant<ISettingsService>(new SettingService());
+            Locator.CurrentMutable.RegisterConstant<ITransactionService>(new TransactionService());
 
             MainPage = new AppShell();
         }

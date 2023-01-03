@@ -20,6 +20,7 @@ namespace Hands.Services
 
         // Categories Setting
         IObservable<IChangeSet<TCategory, string>> ConnectCategoriesSetting();
+        // TODO: Rename to `GetCategoriesSettingFromStorageObservable`
         IObservable<List<TCategory>> GetCategoriesSettingObservable();
         void AddNewCategory(string name, string type);
         void RemoveCategory(TCategory category);
@@ -27,6 +28,7 @@ namespace Hands.Services
 
         // Accounts Setting
         IObservable<IChangeSet<TAccount, string>> ConnectAccountsSetting();
+        // TODO: Rename to `GetAccountsSettingFromStorageObservable`
         IObservable<List<TAccount>> GetAccountsSettingObservable();
         void AddNewAccount(string name);
         void RemoveAccount(TAccount account);

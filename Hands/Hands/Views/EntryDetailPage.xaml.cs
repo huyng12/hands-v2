@@ -7,13 +7,13 @@ using Hands.Models;
 
 namespace Hands.Views
 {
-    public partial class EntryDetailPage : ReactiveContentPage<EntryDetailViewModel>
+    public partial class EntryDetailPage : ReactiveContentPage<EntryDetailViewModel>, ICancelableModalPage
     {
-        public EntryDetailPage()
+        public EntryDetailPage(TransactionWithAccountWithCategory transaction = null)
         {
             InitializeComponent();
 
-            ViewModel = new EntryDetailViewModel();
+            ViewModel = new EntryDetailViewModel(transaction);
 
             BindingContext = ViewModel;
 

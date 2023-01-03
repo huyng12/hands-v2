@@ -4,9 +4,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
         xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
         xmlns:vm="clr-namespace:Hands.ViewModels"
+        xmlns:models="clr-namespace:Hands.Models"
         x:Class="Hands.Views.EntryPage"
         x:TypeArguments="vm:EntryViewModel"
         Title="Transactions">
+
+    <ContentPage.BindingContext>
+        <vm:EntryViewModel/>
+    </ContentPage.BindingContext>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding AddCommand,Mode=OneTime}">
@@ -18,6 +23,14 @@
     </ContentPage.ToolbarItems>
 
     <StackLayout>
-        <Label Text="Entry page"/>
+        <ListView x:Name="ListViewTransactions" ItemsSource="{Binding Transactions}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="vm:TransactionWithAccountWithCategory">
+                    <TextCell Text="{Binding Transaction.Amount}" Detail="{Binding CategoryName}"
+                              CommandParameter="{Binding .}"
+                              Command="{Binding Source={x:Reference ListViewTransactions}, Path=BindingContext.EditCommand}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
 </rxui:ReactiveContentPage>

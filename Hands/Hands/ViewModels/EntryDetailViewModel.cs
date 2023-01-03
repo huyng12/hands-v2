@@ -3,6 +3,7 @@ using System;
 using System.Reactive;
 using ReactiveUI;
 using Splat;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using System.Reactive.Linq;
 using System.Globalization;
@@ -11,36 +12,75 @@ using Hands.Models;
 using Hands.Services;
 using DynamicData;
 using DynamicData.Binding;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace Hands.ViewModels
 {
     public class EntryDetailViewModel : ReactiveObject, IDisposable
     {
         private readonly ISettingsService settingsService;
+        private readonly ITransactionService transactionService;
 
-        public EntryDetailViewModel()
+        private readonly TransactionWithAccountWithCategory transaction;
+
+        public EntryDetailViewModel(TransactionWithAccountWithCategory transaction)
         {
+            this.transaction = transaction;
+
             settingsService = Locator.Current.GetService<ISettingsService>();
+            transactionService = Locator.Current.GetService<ITransactionService>();
 
-            Amount = 0;
+            #region Initial UI states
 
-            accountsDisposable = this.settingsService
+            // Note: Technically, variables hold numbers will be initialized with 0
+            // Because of it, setting index to 0 (zero) will not trigger UI to update
+            // REMEMBER to assign all indexes to -1
+            SelectedAccountIndex = -1;
+            SelectedCategoryIndex = -1;
+
+            // Update UI states to match with input transaction
+            Amount = transaction != null ? transaction.Transaction.Amount : 0;
+            SelectedCategoryType = transaction != null
+                ? transaction.Transaction.Type : "Expense";
+
+            #endregion
+
+            bool shouldSetSelectedAccountIndex = transaction == null;
+            var accountsDisposable = this.settingsService
                 .ConnectAccountsSetting()
                 .RefCount()
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Sort(SortExpressionComparer<TAccount>.Ascending(v => v.Name))
                 .Bind(out accounts)
                 .DisposeMany()
-                .Subscribe();
+                .Subscribe(_ =>
+                {
+                    if (shouldSetSelectedAccountIndex) { SelectedAccountIndex = 0; return; }
+                    shouldSetSelectedAccountIndex = true;
+                    if (transaction.Account != null)
+                        SelectedAccount = transaction.Account;
+                });
 
-            categoriesDisposable = this.settingsService
+            var typeFilter = this
+                .WhenAnyValue(vm => vm.SelectedCategoryType)
+                .Select(CreateFilterByType);
+
+            bool shouldSetSelectedCategoryIndex = transaction == null;
+            var categoriesDisposable = this.settingsService
                 .ConnectCategoriesSetting()
                 .RefCount()
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Sort(SortExpressionComparer<TCategory>.Ascending(v => v.Name))
+                .Filter(typeFilter)
+                .DistinctUntilChanged()
                 .Bind(out categories)
                 .DisposeMany()
-                .Subscribe();
+                .Subscribe(_ =>
+                {
+                    if (shouldSetSelectedCategoryIndex) { SelectedCategoryIndex = 0; return; }
+                    shouldSetSelectedCategoryIndex = true;
+                    if (transaction.Category != null)
+                        SelectedCategory = transaction.Category;
+                });
 
             amountStr = this
                 .WhenAnyValue(vm => vm.Amount)
@@ -49,10 +89,15 @@ namespace Hands.ViewModels
                 .ToProperty(this, nameof(AmountStr));
 
             var canExecuteDoneCommand = this
-                .WhenAnyValue(vm => vm.Amount, (amount) => amount > 0);
+                .WhenAnyValue(
+                    vm => vm.Amount, vm => vm.SelectedAccount, vm => vm.SelectedCategory,
+                    (amount, account, category) =>
+                        amount > 0 && account != null && category != null);
 
             DoneCommand = ReactiveCommand.CreateFromTask(
                 ExecuteDoneCommand, canExecuteDoneCommand);
+
+            _cleanUp = new CompositeDisposable(accountsDisposable, categoriesDisposable);
         }
 
         private readonly ReadOnlyObservableCollection<TAccount> accounts;
@@ -64,6 +109,41 @@ namespace Hands.ViewModels
         readonly ObservableAsPropertyHelper<string> amountStr;
         public string AmountStr => amountStr.Value;
 
+        private string selectedCategoryType;
+        public string SelectedCategoryType
+        {
+            get => selectedCategoryType;
+            set => this.RaiseAndSetIfChanged(ref selectedCategoryType, value);
+        }
+
+        private int selectedAccountIndex;
+        public int SelectedAccountIndex
+        {
+            get => selectedAccountIndex;
+            set => this.RaiseAndSetIfChanged(ref selectedAccountIndex, value);
+        }
+
+        private TAccount selectedAccount;
+        public TAccount SelectedAccount
+        {
+            get => selectedAccount;
+            set => this.RaiseAndSetIfChanged(ref selectedAccount, value);
+        }
+
+        private int selectedCategoryIndex;
+        public int SelectedCategoryIndex
+        {
+            get => selectedCategoryIndex;
+            set => this.RaiseAndSetIfChanged(ref selectedCategoryIndex, value);
+        }
+
+        private TCategory selectedCategory;
+        public TCategory SelectedCategory
+        {
+            get => selectedCategory;
+            set => this.RaiseAndSetIfChanged(ref selectedCategory, value);
+        }
+
         private Int64 amount;
         public Int64 Amount
         {
@@ -74,7 +154,23 @@ namespace Hands.ViewModels
         public ReactiveCommand<Unit, Unit> DoneCommand { get; set; }
 
         private async Task ExecuteDoneCommand()
-            => await Shell.Current.Navigation.PopModalAsync();
+        {
+            if (transaction != null)
+            {
+                TTransaction tx = new TTransaction(transaction.Transaction);
+                tx.Amount = Amount;
+                tx.Type = SelectedCategory.Type;
+                tx.AccountId = SelectedAccount.Id;
+                tx.CategoryId = SelectedCategory.Id;
+                transactionService.UpdateTransaction(tx);
+            }
+            else
+            {
+                transactionService.AddNewTransaction(Amount, SelectedAccount, SelectedCategory);
+            }
+
+            await Shell.Current.Navigation.PopModalAsync();
+        }
 
         public void OnNumericKeyboardButtonClicked(int number)
         {
@@ -83,13 +179,13 @@ namespace Hands.ViewModels
             else Amount = Amount * 10 + number;
         }
 
-        private readonly IDisposable accountsDisposable;
-        private readonly IDisposable categoriesDisposable;
-
-        public void Dispose()
+        private Func<TCategory, bool> CreateFilterByType(string type)
         {
-            accountsDisposable.Dispose();
-            categoriesDisposable.Dispose();
+            if (String.IsNullOrEmpty(type)) return category => true;
+            return category => category.Type == type;
         }
+
+        private readonly IDisposable _cleanUp;
+        public void Dispose() => _cleanUp.Dispose();
     }
 }
