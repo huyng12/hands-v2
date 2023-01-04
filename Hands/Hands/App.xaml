@@ -12,6 +12,10 @@
             <Color x:Key="LightGray">#F2F1F6</Color>
             <Color x:Key="Black">#191927</Color>
             <Color x:Key="Blue">#0E7AFE</Color>
+            <Color x:Key="Green">#098D1D</Color>
+            <Color x:Key="Pink">#D784AD</Color>
+            <Color x:Key="GrayDimmed">#82828D</Color>
+            <Color x:Key="GrayDimmed1">#ABABB6</Color>
 
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="{StaticResource Black}"></Setter>

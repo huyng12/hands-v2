@@ -18,11 +18,15 @@ namespace Hands.ViewModels
 
         private readonly ISettingsService service;
 
+        private readonly ITransactionService transactionService;
+
         public SettingsViewModel(INavigation navigation)
         {
             navigationService = navigation;
 
             service = Locator.Current.GetService<ISettingsService>();
+
+            transactionService = Locator.Current.GetService<ITransactionService>();
 
             notificationSetting = service.GetNotificationSettingObservable()
                 .ToProperty(this, nameof(NotificationSetting));
@@ -54,6 +58,7 @@ namespace Hands.ViewModels
         private async Task ExecuteResetNotificationSettingCommand()
         {
             await service.ResetSettingAsync();
+            //transactionService.Reset();
             notificationSetting = service.GetNotificationSettingObservable()
                 .ToProperty(this, nameof(NotificationSetting));
         }

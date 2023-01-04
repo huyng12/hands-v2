@@ -31,19 +31,19 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Transactions" ContentTemplate="{DataTemplate local:EntryPage}">
+        <ShellContent ContentTemplate="{DataTemplate local:EntryPage}">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FAProSolid" Glyph="" Size="22" />
+                <FontImageSource FontFamily="FAProSolid" Glyph="" Size="30" />
             </ShellContent.Icon>
         </ShellContent>
-        <ShellContent Title="Report" ContentTemplate="{DataTemplate local:StatsPage}">
+        <ShellContent ContentTemplate="{DataTemplate local:StatsPage}">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FAProSolid" Glyph="" Size="22" />
+                <FontImageSource FontFamily="FAProSolid" Glyph="" Size="30" />
             </ShellContent.Icon>
         </ShellContent>
-        <ShellContent Title="Settings" ContentTemplate="{DataTemplate local:SettingsPage}">
+        <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}">
             <ShellContent.Icon>
-                <FontImageSource FontFamily="FAProSolid" Glyph="" Size="22" />
+                <FontImageSource FontFamily="FAProSolid" Glyph="" Size="30" />
             </ShellContent.Icon>
         </ShellContent>
     </TabBar>

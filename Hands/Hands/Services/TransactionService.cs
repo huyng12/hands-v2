@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Akavache;
 using DynamicData;
 using Hands.Models;
@@ -34,6 +35,15 @@ namespace Hands.Services
             _cleanUp = new CompositeDisposable(loadFromStorage, saveToStorageOnChange);
         }
 
+        public void Reset()
+        {
+            transactions.Edit((source) =>
+            {
+                source.Clear();
+                source.AddOrUpdate(new List<TTransaction>());
+            });
+        }
+
         public IObservable<List<TTransaction>> GetTransactionsFromStorageObservable()
             => store.GetOrCreateObject<List<TTransaction>>(
                 storeKey, () => new List<TTransaction>());
@@ -45,7 +55,7 @@ namespace Hands.Services
             => transactions.AddOrUpdate(new TTransaction
             {
                 Id = Guid.NewGuid().ToString(),
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTimeOffset.Now,
                 Type = category.Type,
                 Amount = amount,
                 AccountId = account.Id,

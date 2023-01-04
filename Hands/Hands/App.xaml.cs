@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using Hands.Services;
 using Hands.Views;
 using Hands.ViewModels;
+using System;
 
 namespace Hands
 {
@@ -12,6 +13,7 @@ namespace Hands
     {
         public App()
         {
+            BlobCache.ForcedDateTimeKind = DateTimeKind.Local;
             Akavache.Registrations.Start("Hands");
 
             InitializeComponent();

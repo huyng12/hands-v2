@@ -17,7 +17,7 @@ namespace Hands.Models
 
         // should be filled programmtically
         public string Id { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
 
         // should be lifted up from `Category`
         // in case the category was removed, we still can separate transactions

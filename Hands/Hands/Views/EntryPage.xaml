@@ -5,6 +5,7 @@
         xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
         xmlns:vm="clr-namespace:Hands.ViewModels"
         xmlns:models="clr-namespace:Hands.Models"
+        xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
         x:Class="Hands.Views.EntryPage"
         x:TypeArguments="vm:EntryViewModel"
         Title="Transactions">
@@ -17,18 +18,109 @@
         <ToolbarItem Command="{Binding AddCommand,Mode=OneTime}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="FAProSolid" Glyph=""
-                                 Size="22" Color="{StaticResource Black}" />
+                                 Size="20" Color="{StaticResource Black}" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <StackLayout>
-        <ListView x:Name="ListViewTransactions" ItemsSource="{Binding Transactions}">
+        <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="*, *"
+              RowSpacing="20" ColumnSpacing="20" Padding="10, 50, 10, 30">
+            <StackLayout Grid.Row="0" Grid.ColumnSpan="2" Spacing="10">
+                <Label Text="Total balance" FontSize="20" FontAttributes="Bold"
+                       TextColor="{StaticResource GrayDimmed}" HorizontalTextAlignment="Center" />
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                    <Label Text="{Binding FormattedTotalBalance}" FontSize="60"
+                           HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Label Text="₫" TextColor="DimGray" FontSize="40" VerticalOptions="Center" />
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" Grid.Column="0"
+                         Orientation="Horizontal" HorizontalOptions="End">
+                <Label TextColor="{StaticResource Green}" FontSize="22" FontFamily="FAProRegular" Text="" VerticalOptions="Center" />
+                <Label TextColor="{StaticResource Green}" FontSize="22" Text="{Binding FormattedTotalReceived}" VerticalOptions="Center" />
+                <Label Text="₫" TextColor="{StaticResource GrayDimmed1}" FontSize="22" VerticalOptions="Center" Margin="-4,0,0,0" />
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" Grid.Column="1"
+                         Orientation="Horizontal" HorizontalOptions="Start">
+                <Label TextColor="{StaticResource Pink}" FontSize="22" FontFamily="FAProRegular" Text="" VerticalOptions="Center" />
+                <Label TextColor="{StaticResource Pink}" FontSize="22" Text="{Binding FormattedTotalSpent}" VerticalOptions="Center" />
+                <Label Text="₫" TextColor="{StaticResource GrayDimmed1}" FontSize="22" VerticalOptions="Center" Margin="-4,0,0,0" />
+            </StackLayout>
+        </Grid>
+
+        <ListView x:Name="ListViewTransactions" ItemsSource="{Binding Transactions}"
+                  IsGroupingEnabled="True" GroupDisplayBinding="{Binding Key}"
+                  HasUnevenRows="True">
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell ios:Cell.DefaultBackgroundColor="Transparent">
+                        <StackLayout Orientation="Horizontal" VerticalOptions="Center"
+                                     Padding="20, -10, 20, -10">
+                            <Label Text="{Binding Key}"
+                                   TextColor="{StaticResource GrayDimmed1}"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="StartAndExpand"
+                                   FontSize="20" />
+                            <!--<Label FontSize="22"
+                                   TextColor="{StaticResource GrayDimmed1}"
+                                   FontFamily="FAProRegular"
+                                   Text=""
+                                   VerticalOptions="Center" />-->
+                            <Label Text="{Binding FormattedAggregateValue}"
+                                   TextColor="{StaticResource GrayDimmed1}"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalTextAlignment="End"
+                                   FontSize="20" />
+                            <Label Text="₫"
+                                   TextColor="{StaticResource GrayDimmed1}"
+                                   FontSize="20"
+                                   HorizontalOptions="Start"
+                                   VerticalTextAlignment="Center"
+                                   Margin="-4,0,0,0" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:TransactionWithAccountWithCategory">
-                    <TextCell Text="{Binding Transaction.Amount}" Detail="{Binding CategoryName}"
+                    <ViewCell Height="50">
+                        <Grid RowDefinitions="*" ColumnDefinitions="Auto, *, Auto"
+                              ColumnSpacing="10" Padding="20, 0, 20, 0">
+                            <Label Grid.Column="0"
+                                   Text="{Binding Icon}"
+                                   HorizontalOptions="End"
+                                   HorizontalTextAlignment="Start"
+                                   VerticalTextAlignment="Center"
+                                   FontSize="20"
+                                   WidthRequest="30" />
+                            <Label Grid.Column="1"
+                                   Text="{Binding CategoryName}"
+                                   HorizontalOptions="StartAndExpand"
+                                   VerticalTextAlignment="Center"
+                                   FontSize="20" />
+                            <StackLayout Grid.Column="2"
+                                         Orientation="Horizontal" VerticalOptions="Center">
+                                <Label Text="{Binding FormattedAmount}"
+                                       HorizontalOptions="End"
+                                       VerticalTextAlignment="Center"
+                                       TextColor="{Binding FormattedAmountColor}"
+                                       FontSize="20" />
+                                <Label Text="₫"
+                                       TextColor="{StaticResource GrayDimmed1}"
+                                       FontSize="20"
+                                       HorizontalOptions="Start"
+                                       VerticalTextAlignment="Center"
+                                       Margin="-4,0,0,0" />
+                            </StackLayout>
+                        </Grid>
+                    </ViewCell>
+                    <!--<TextCell Text="{Binding Transaction.Amount}" Detail="{Binding CategoryName}"
                               CommandParameter="{Binding .}"
-                              Command="{Binding Source={x:Reference ListViewTransactions}, Path=BindingContext.EditCommand}" />
+                              Command="{Binding Source={x:Reference ListViewTransactions}, Path=BindingContext.EditCommand}" />-->
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
