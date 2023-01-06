@@ -64,11 +64,6 @@
                                    VerticalTextAlignment="Center"
                                    HorizontalOptions="StartAndExpand"
                                    FontSize="20" />
-                            <!--<Label FontSize="22"
-                                   TextColor="{StaticResource GrayDimmed1}"
-                                   FontFamily="FAProRegular"
-                                   Text=""
-                                   VerticalOptions="Center" />-->
                             <Label Text="{Binding FormattedAggregateValue}"
                                    TextColor="{StaticResource GrayDimmed1}"
                                    VerticalTextAlignment="Center"
@@ -90,6 +85,11 @@
                     <ViewCell Height="50">
                         <Grid RowDefinitions="*" ColumnDefinitions="Auto, *, Auto"
                               ColumnSpacing="10" Padding="20, 0, 20, 0">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    CommandParameter="{Binding .}"
+                                    Command="{Binding Source={x:Reference ListViewTransactions}, Path=BindingContext.EditCommand}" />
+                            </Grid.GestureRecognizers>
                             <Label Grid.Column="0"
                                    Text="{Binding Icon}"
                                    HorizontalOptions="End"
@@ -98,7 +98,7 @@
                                    FontSize="20"
                                    WidthRequest="30" />
                             <Label Grid.Column="1"
-                                   Text="{Binding CategoryName}"
+                                   Text="{Binding TxDisplayName}"
                                    HorizontalOptions="StartAndExpand"
                                    VerticalTextAlignment="Center"
                                    FontSize="20" />
@@ -118,9 +118,6 @@
                             </StackLayout>
                         </Grid>
                     </ViewCell>
-                    <!--<TextCell Text="{Binding Transaction.Amount}" Detail="{Binding CategoryName}"
-                              CommandParameter="{Binding .}"
-                              Command="{Binding Source={x:Reference ListViewTransactions}, Path=BindingContext.EditCommand}" />-->
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

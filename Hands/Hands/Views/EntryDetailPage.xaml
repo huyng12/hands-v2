@@ -8,10 +8,6 @@
         x:Class="Hands.Views.EntryDetailPage"
         x:TypeArguments="vm:EntryDetailViewModel">
 
-    <!--<ContentPage.BindingContext>
-        <vm:EntryDetailViewModel />
-    </ContentPage.BindingContext>-->
-
     <NavigationPage.TitleView>
         <controls:BorderlessPicker
             SelectedItem="{Binding SelectedCategoryType}"
@@ -29,16 +25,39 @@
         <ToolbarItem Text="Done" Command="{Binding DoneCommand,Mode=OneTime}" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="*, Auto, Auto, Auto, Auto" ColumnDefinitions="*">
+    <Grid RowDefinitions="*, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="*">
         <StackLayout Grid.Row="0" Orientation="Horizontal"
                      HorizontalOptions="Center" Padding="10, 0, 10, 0">
             <Label Text="{Binding AmountStr}" FontSize="50" HorizontalOptions="Center" VerticalOptions="Center" />
             <Label Text="₫" TextColor="DimGray" FontSize="40" VerticalOptions="Center" />
         </StackLayout>
 
-        <BoxView Grid.Row="1" HeightRequest="0.6" Color="LightGray" />
+        <StackLayout Grid.Row="1" Orientation="Horizontal"
+                     Padding="20, 5, 20, 5" Spacing="10">
+            <Label Text=""
+                   TextColor="{StaticResource GrayDimmed1}"
+                   FontSize="20"
+                   FontFamily="FAProRegular"
+                   VerticalTextAlignment="Center" />
+            <Label IsVisible="{Binding IsNoteEmpty}"
+                   Text="Add Note (Optional)"
+                   TextColor="{StaticResource GrayDimmed1}"
+                   FontSize="20"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalTextAlignment="Center" />
+            <Label Text="{Binding Note}"
+                   TextColor="{StaticResource GrayDimmed1}"
+                   FontSize="20"
+                   HorizontalOptions="StartAndExpand"
+                   VerticalTextAlignment="Center" />
+            <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding AddNoteCommand}"/>
+            </StackLayout.GestureRecognizers>
+        </StackLayout>
 
-        <Grid Grid.Row="2" RowDefinitions="Auto" ColumnDefinitions="*, Auto, *"
+        <BoxView Grid.Row="2" HeightRequest="0.6" Color="LightGray" />
+
+        <Grid Grid.Row="3" RowDefinitions="Auto" ColumnDefinitions="*, Auto, *"
               ColumnSpacing="20" Padding="20, 5, 20, 5">
             <controls:BorderlessPicker Grid.Column="0" Title="Select Account" HorizontalTextAlignment="Center"
                     ItemsSource="{Binding Accounts}" ItemDisplayBinding="{Binding Name}"
@@ -52,9 +71,9 @@
                     SelectedIndex="{Binding SelectedCategoryIndex}" SelectedItem="{Binding SelectedCategory}" />
         </Grid>
 
-        <BoxView Grid.Row="3" HeightRequest="0.6" Color="LightGray" />
+        <BoxView Grid.Row="4" HeightRequest="0.6" Color="LightGray" />
 
-        <StackLayout x:Name="NumericKeyboard" Grid.Row="4" Padding="20, 0, 20, 20" />
+        <StackLayout x:Name="NumericKeyboard" Grid.Row="5" Padding="20, 0, 20, 20" />
     </Grid>
 
 </rxui:ReactiveContentPage>

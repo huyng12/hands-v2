@@ -11,7 +11,8 @@ namespace Hands.Services
         void Reset();
         IObservable<IChangeSet<TTransaction, string>> Connect();
         IObservable<List<TTransaction>> GetTransactionsFromStorageObservable();
-        void AddNewTransaction(Int64 amount, TAccount account, TCategory category);
+        void AddNewTransaction(Int64 amount, TAccount account,
+            TCategory category, string note);
         void UpdateTransaction(TTransaction transaction);
         void RemoveTransaction(TTransaction transaction);
     }

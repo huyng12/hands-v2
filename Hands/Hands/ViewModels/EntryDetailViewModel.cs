@@ -40,6 +40,9 @@ namespace Hands.ViewModels
             SelectedCategoryIndex = -1;
 
             // Update UI states to match with input transaction
+            Note = transaction != null
+                && !String.IsNullOrEmpty(transaction.Transaction.Note)
+                    ? transaction.Transaction.Note : null;
             Amount = transaction != null ? transaction.Transaction.Amount : 0;
             SelectedCategoryType = transaction != null
                 ? transaction.Transaction.Type : "Expense";
@@ -88,6 +91,12 @@ namespace Hands.ViewModels
                 .Select(amount => String.Format(CultureInfo.GetCultureInfo("en-US"), "{0:N0}", amount))
                 .ToProperty(this, nameof(AmountStr));
 
+            isNoteEmpty = this
+                .WhenAnyValue(vm => vm.Note)
+                .DistinctUntilChanged()
+                .Select(note => String.IsNullOrEmpty(note))
+                .ToProperty(this, nameof(IsNoteEmpty));
+
             var canExecuteDoneCommand = this
                 .WhenAnyValue(
                     vm => vm.Amount, vm => vm.SelectedAccount, vm => vm.SelectedCategory,
@@ -96,6 +105,8 @@ namespace Hands.ViewModels
 
             DoneCommand = ReactiveCommand.CreateFromTask(
                 ExecuteDoneCommand, canExecuteDoneCommand);
+            AddNoteCommand = ReactiveCommand.CreateFromTask(
+                ExecuteAddNoteCommand);
 
             _cleanUp = new CompositeDisposable(accountsDisposable, categoriesDisposable);
         }
@@ -151,13 +162,25 @@ namespace Hands.ViewModels
             set => this.RaiseAndSetIfChanged(ref amount, value);
         }
 
+        private string note;
+        public string Note
+        {
+            get => note;
+            set => this.RaiseAndSetIfChanged(ref note, value);
+        }
+
+        readonly ObservableAsPropertyHelper<bool> isNoteEmpty;
+        public bool IsNoteEmpty => isNoteEmpty.Value;
+
         public ReactiveCommand<Unit, Unit> DoneCommand { get; set; }
+        public ReactiveCommand<Unit, Unit> AddNoteCommand { get; set; }
 
         private async Task ExecuteDoneCommand()
         {
             if (transaction != null)
             {
                 TTransaction tx = new TTransaction(transaction.Transaction);
+                tx.Note = Note;
                 tx.Amount = Amount;
                 tx.Type = SelectedCategory.Type;
                 tx.AccountId = SelectedAccount.Id;
@@ -166,10 +189,21 @@ namespace Hands.ViewModels
             }
             else
             {
-                transactionService.AddNewTransaction(Amount, SelectedAccount, SelectedCategory);
+                transactionService.AddNewTransaction(
+                    Amount, SelectedAccount, SelectedCategory, Note);
             }
 
             await Shell.Current.Navigation.PopModalAsync();
+        }
+
+        private async Task ExecuteAddNoteCommand()
+        {
+            var note = await App.Current.MainPage.DisplayPromptAsync(
+                "Add note",
+                "Please input a short note for this transaction",
+                String.IsNullOrEmpty(Note) ? "Create" : "Update",
+                "Cancel", "Note", -1, null, Note);
+            Note = note;
         }
 
         public void OnNumericKeyboardButtonClicked(int number)

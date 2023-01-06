@@ -51,12 +51,14 @@ namespace Hands.Services
         public IObservable<IChangeSet<TTransaction, string>> Connect()
             => transactions.Connect();
 
-        public void AddNewTransaction(long amount, TAccount account, TCategory category)
+        public void AddNewTransaction(long amount, TAccount account,
+            TCategory category, string note)
             => transactions.AddOrUpdate(new TTransaction
             {
                 Id = Guid.NewGuid().ToString(),
                 CreatedAt = DateTimeOffset.Now,
                 Type = category.Type,
+                Note = note,
                 Amount = amount,
                 AccountId = account.Id,
                 CategoryId = category.Id

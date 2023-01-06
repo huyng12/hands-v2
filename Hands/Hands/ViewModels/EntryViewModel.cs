@@ -24,6 +24,8 @@ namespace Hands.ViewModels
     {
         public TTransaction Transaction { get; set; }
 
+        public string TxDisplayName { get; set; }
+
         public string FormattedAmount { get; set; }
         public Color FormattedAmountColor { get; set; }
 
@@ -71,7 +73,7 @@ namespace Hands.ViewModels
         public string Icon { get; set; }
         public string CategoryName { get; set; }
 
-        private void ComputeIconProperty()
+        private void ComputeDisplayProperties()
         {
             if (CategoryName == null) return;
 
@@ -83,19 +85,21 @@ namespace Hands.ViewModels
             string[] parts = CategoryName.Split(' ');
 
             Icon = isStartsWithEmoji ? parts.First() : isExpense ? "↗️" : "↘️";
-            CategoryName = isStartsWithEmoji
-                ? String.Join(" ", parts.Skip(1))
-                : CategoryName;
+            TxDisplayName = !String.IsNullOrEmpty(Transaction.Note)
+                ? $"\"{Transaction.Note}\""
+                : isStartsWithEmoji
+                    ? String.Join(" ", parts.Skip(1))
+                    : CategoryName;
         }
 
-        public TransactionWithAccountWithCategory() { this.ComputeIconProperty(); }
+        public TransactionWithAccountWithCategory() { this.ComputeDisplayProperties(); }
         public TransactionWithAccountWithCategory(
             TransactionWithAccount transaction, Optional<TCategory> category)
             : base(transaction.Transaction, transaction.Account)
         {
             Category = category.HasValue ? category.Value : null;
             CategoryName = category.HasValue ? category.Value.Name : "❓ Uncategorised";
-            this.ComputeIconProperty();
+            this.ComputeDisplayProperties();
         }
     }
 
@@ -201,7 +205,8 @@ namespace Hands.ViewModels
                 .ToProperty(this, nameof(FormattedTotalBalance));
 
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
-            EditCommand = ReactiveCommand.CreateFromTask<TransactionWithAccountWithCategory>(ExecuteEditCommand);
+            EditCommand = ReactiveCommand.CreateFromTask<
+                TransactionWithAccountWithCategory>(ExecuteEditCommand);
 
             _cleanUp = new CompositeDisposable(transactionsDisposable);
         }

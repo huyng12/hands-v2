@@ -10,6 +10,7 @@ namespace Hands.Models
             Id = tx.Id;
             CreatedAt = tx.CreatedAt;
             Type = tx.Type;
+            Note = tx.Note;
             Amount = tx.Amount;
             AccountId = tx.AccountId;
             CategoryId = tx.CategoryId;
@@ -23,6 +24,7 @@ namespace Hands.Models
         // in case the category was removed, we still can separate transactions
         public string Type { get; set; }
 
+        public string Note { get; set; }
         public Int64 Amount { get; set; }
         public string AccountId { get; set; }
         public string CategoryId { get; set; }
