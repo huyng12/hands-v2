@@ -13,8 +13,8 @@
         <TableView HasUnevenRows="True" Intent="Settings">
             <TableRoot>
                 <TableSection Title="Preferences">
-                    <TextCell StyleId="disclosure" x:Name="SetupNotifications"
-                              Text="Notifications" Detail="{Binding NotificationSetting}" />
+                    <!--<TextCell StyleId="disclosure" x:Name="SetupNotifications"
+                              Text="Notifications" Detail="{Binding NotificationSetting}" />-->
                     <TextCell StyleId="disclosure" x:Name="SetupAccounts"
                               Text="Accounts" Command="{Binding GoToAccountsSettingCommand}" />
                     <TextCell StyleId="disclosure" x:Name="SetupCategories"

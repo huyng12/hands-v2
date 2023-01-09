@@ -32,7 +32,68 @@
                               Command="{Binding GoNextCommand}" />
         </StackLayout>
 
-        <chart:SfChart x:Name="Chart" HeightRequest="250" HorizontalOptions="FillAndExpand">
+        <StackLayout Orientation="Horizontal" VerticalOptions="Center"
+                     Padding="20, 10, 20, 0" HorizontalOptions="FillAndExpand">
+            <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                <StackLayout Orientation="Horizontal">
+                    <Label TextColor="{StaticResource Green}"
+                           FontSize="20"
+                           FontFamily="FAProRegular"
+                           Text=""
+                           VerticalOptions="Center" />
+                    <Label TextColor="{StaticResource Green}"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           Text="Income"
+                           VerticalOptions="Center" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding FormattedTotalReceived}"
+                            TextColor="{StaticResource Black}"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="Start"
+                            HorizontalOptions="EndAndExpand"
+                            FontSize="20" />
+                    <Label Text="₫"
+                            TextColor="{StaticResource GrayDimmed1}"
+                            FontSize="20"
+                            HorizontalOptions="Start"
+                            VerticalTextAlignment="Center"
+                            Margin="-4,0,0,0" />
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" HorizontalOptions="EndAndExpand">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                    <Label TextColor="{StaticResource Black}"
+                           FontSize="20"
+                           FontFamily="FAProRegular"
+                           Text=""
+                           VerticalOptions="Center" />
+                    <Label TextColor="{StaticResource Black}"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           Text="Expense"
+                           VerticalOptions="Center" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding FormattedTotalSpent}"
+                            TextColor="{StaticResource Black}"
+                            VerticalTextAlignment="Center"
+                            HorizontalTextAlignment="End"
+                            HorizontalOptions="EndAndExpand"
+                            FontSize="20" />
+                    <Label Text="₫"
+                            TextColor="{StaticResource GrayDimmed1}"
+                            FontSize="20"
+                            HorizontalOptions="Start"
+                            VerticalTextAlignment="Center"
+                            Margin="-4,0,0,0" />
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+
+        <chart:SfChart x:Name="Chart" HeightRequest="200" HorizontalOptions="FillAndExpand">
             <chart:SfChart.Legend>
                 <chart:ChartLegend />
             </chart:SfChart.Legend>
@@ -69,6 +130,7 @@
 
             <chart:SfChart.Series>
                 <chart:ColumnSeries
+                    IsVisibleOnLegend="False"
                     CornerRadius="5, 5, 0, 0"
                     Color="{StaticResource Green}"
                     ItemsSource="{Binding Incomes}" Label="Incomes"
@@ -87,6 +149,7 @@
                 </chart:ColumnSeries>
 
                 <chart:ColumnSeries
+                    IsVisibleOnLegend="False"
                     CornerRadius="5, 5, 0, 0"
                     Color="{StaticResource Black}"
                     ItemsSource="{Binding Transactions}" Label="Expense"
@@ -105,5 +168,52 @@
                 </chart:ColumnSeries>
             </chart:SfChart.Series>
         </chart:SfChart>
+
+        <ListView ItemsSource="{Binding GroupedTransactions}" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="vm:TransactionWithCategoryGrouping">
+                    <ViewCell Height="50">
+                        <Grid RowDefinitions="*" ColumnDefinitions="Auto, *, Auto"
+                              ColumnSpacing="10" Padding="20, 0, 20, 0">
+                            <Label Grid.Column="0"
+                                   Text="{Binding Icon}"
+                                   HorizontalOptions="End"
+                                   HorizontalTextAlignment="Start"
+                                   VerticalTextAlignment="Center"
+                                   FontSize="20"
+                                   WidthRequest="30" />
+                            <StackLayout Grid.Column="1" Orientation="Horizontal"
+                                         HorizontalOptions="StartAndExpand" VerticalOptions="Center">
+                                <Label Text="{Binding CategoryName}"
+                                       VerticalTextAlignment="Center"
+                                       FontSize="20" />
+                                <Label Text="x"
+                                       TextColor="{StaticResource GrayDimmed1}"
+                                       VerticalTextAlignment="Center"
+                                       FontSize="20" />
+                                <Label Text="{Binding Count}"
+                                       TextColor="{StaticResource GrayDimmed1}"
+                                       VerticalTextAlignment="Center"
+                                       FontSize="20"
+                                       Margin="-5,0,0,0" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="2"
+                                         Orientation="Horizontal" VerticalOptions="Center">
+                                <Label Text="{Binding FormattedTotal}"
+                                       HorizontalOptions="End"
+                                       VerticalTextAlignment="Center"
+                                       FontSize="20" />
+                                <Label Text="₫"
+                                       TextColor="{StaticResource GrayDimmed1}"
+                                       FontSize="20"
+                                       HorizontalOptions="Start"
+                                       VerticalTextAlignment="Center"
+                                       Margin="-4,0,0,0" />
+                            </StackLayout>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
 </rxui:ReactiveContentPage>
