@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Akavache;
 using DynamicData;
 using Hands.Models;
+using Newtonsoft.Json;
 using ReactiveUI;
 
 namespace Hands.Services
@@ -20,7 +21,9 @@ namespace Hands.Services
         public TransactionService()
         {
             var loadFromStorage = this.GetTransactionsFromStorageObservable()
+                .ObserveOn(RxApp.TaskpoolScheduler)
                 .Do(items => transactions.AddOrUpdate(items))
+                //.Do(transactions => Console.WriteLine(JsonConvert.SerializeObject(transactions)))
                 .Subscribe();
 
             var saveToStorageOnChange = this.transactions
@@ -28,6 +31,7 @@ namespace Hands.Services
                 .ObserveOn(RxApp.TaskpoolScheduler)
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .Select(_ => this.transactions.Items)
+                //.Do(transactions => Console.WriteLine(JsonConvert.SerializeObject(transactions)))
                 .Do(async (transactions) => await store
                     .InsertObject<IEnumerable<TTransaction>>(storeKey, transactions))
                 .Subscribe();
@@ -40,7 +44,8 @@ namespace Hands.Services
             transactions.Edit((source) =>
             {
                 source.Clear();
-                source.AddOrUpdate(new List<TTransaction>());
+                //source.AddOrUpdate(new List<TTransaction>());
+                source.AddOrUpdate(ServiceConsts.sampleTransactions);
             });
         }
 

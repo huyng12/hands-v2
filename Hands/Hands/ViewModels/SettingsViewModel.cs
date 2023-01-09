@@ -58,7 +58,7 @@ namespace Hands.ViewModels
         private async Task ExecuteResetNotificationSettingCommand()
         {
             await service.ResetSettingAsync();
-            //transactionService.Reset();
+            transactionService.Reset();
             notificationSetting = service.GetNotificationSettingObservable()
                 .ToProperty(this, nameof(NotificationSetting));
         }

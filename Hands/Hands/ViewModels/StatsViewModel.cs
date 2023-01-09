@@ -17,6 +17,7 @@ using System.Reactive;
 using Newtonsoft.Json;
 using DynamicData.Kernel;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace Hands.ViewModels
 {
@@ -191,6 +192,8 @@ namespace Hands.ViewModels
 
             Timeframe = getCurrentWeekTimeframe();
 
+            Dcm = "Dcm";
+
             var filterByTimeframe = this
                 .WhenAnyValue(vm => vm.Timeframe)
                 .Select(createFilterByTimeframe);
@@ -314,6 +317,13 @@ namespace Hands.ViewModels
         {
             get => timeframeIndicator;
             set => this.RaiseAndSetIfChanged(ref timeframeIndicator, value);
+        }
+
+        private string dcm;
+        public string Dcm
+        {
+            get => dcm;
+            set => this.RaiseAndSetIfChanged(ref dcm, value);
         }
 
         public ReactiveCommand<Unit, Unit> GoBackCommand { get; set; }

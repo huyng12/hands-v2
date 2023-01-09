@@ -168,19 +168,26 @@ namespace Hands.ViewModels
                             .Where(item => item.Transaction.Type == CategoryType.Expense)
                             .Sum(item => item.Transaction.Amount),
                         totalSpent => formatMoney(totalSpent)))
+                .AutoRefresh()
                 .Sort(SortExpressionComparer<ObservableGroupedCollection<string,
                     TransactionWithAccountWithCategory, string, Int64, string>>
-                        .Descending(group => group.Key))
+                        .Descending(group => DateTime.ParseExact(
+                            group.Key, "MMMM dd, yyyy",
+                            CultureInfo.GetCultureInfo("en-US"))))
                 .Bind(out transactions)
                 .DisposeMany()
                 .Subscribe();
 
             totalSpent = transactionsObservable
+                .Filter(tx => tx.CreatedAt.Month == DateTimeOffset.Now.Month
+                            && tx.CreatedAt.Year == DateTimeOffset.Now.Year)
                 .Filter(tx => tx.Type == CategoryType.Expense)
                 .QueryWhenChanged(q => q.Items.Sum(tx => tx.Amount))
                 .ToProperty(this, nameof(TotalSpent));
 
             totalReceived = transactionsObservable
+                .Filter(tx => tx.CreatedAt.Month == DateTimeOffset.Now.Month
+                            && tx.CreatedAt.Year == DateTimeOffset.Now.Year)
                 .Filter(tx => tx.Type == CategoryType.Income)
                 .QueryWhenChanged(q => q.Items.Sum(tx => tx.Amount))
                 .ToProperty(this, nameof(TotalReceived));
