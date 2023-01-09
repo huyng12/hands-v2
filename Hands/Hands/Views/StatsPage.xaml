@@ -22,7 +22,7 @@
                               Command="{Binding GoBackCommand}" />
             <buttons:SfButton Text="{Binding TimeframeIndicator}"
                               TextColor="{StaticResource Black}"
-                              FontSize="16"
+                              FontSize="20"
                               HorizontalOptions="FillAndExpand"
                               VerticalOptions="Center"
                               BackgroundColor="White" />

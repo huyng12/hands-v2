@@ -222,16 +222,6 @@ namespace Hands.ViewModels
             };
         }
 
-        //private IEnumerable<DateTime> getCurrentWeekDays()
-        //{
-        //    DateTime startOfWeek = DateTime.Today.AddDays(
-        //      (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek -
-        //      (int)DateTime.Today.DayOfWeek);
-        //    return Enumerable
-        //        .Range(0, 7)
-        //        .Select(i => startOfWeek.AddDays(i));
-        //}
-
         private readonly IDisposable _cleanUp;
         public void Dispose() { _cleanUp.Dispose(); }
     }
