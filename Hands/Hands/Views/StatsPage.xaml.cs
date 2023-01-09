@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ReactiveUI.XamForms;
 using Hands.ViewModels;
+using Syncfusion.SfChart.XForms;
 
 namespace Hands.Views
 {
@@ -12,6 +13,8 @@ namespace Hands.Views
             InitializeComponent();
 
             ViewModel = new StatsViewModel();
+
+            BindingContext = ViewModel;
         }
     }
 }

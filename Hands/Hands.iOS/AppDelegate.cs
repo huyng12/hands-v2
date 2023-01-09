@@ -23,6 +23,10 @@ namespace Hands.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            Syncfusion.SfChart.XForms.iOS.Renderers.SfChartRenderer.Init();
+            Syncfusion.XForms.iOS.Buttons.SfButtonRenderer.Init();
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

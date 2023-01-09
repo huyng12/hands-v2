@@ -12,6 +12,8 @@
     <PackageReference Include="ReactiveUI.XamForms" Version="18.4.1" />
     <PackageReference Include="akavache" Version="9.0.1" />
     <PackageReference Include="Splat" Version="14.6.1" />
+    <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="20.4.0.42" />
+    <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="20.4.0.42" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="ReactiveUI" />
@@ -24,6 +26,9 @@
     <None Remove="Sextant.XamForms" />
     <None Remove="Splat" />
     <None Remove="Controls\" />
+    <None Remove="Microcharts.Forms" />
+    <None Remove="Syncfusion.Xamarin.SfChart" />
+    <None Remove="Syncfusion.Xamarin.Buttons" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />

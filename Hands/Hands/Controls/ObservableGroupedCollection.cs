@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Hands.Controls
 {
@@ -14,8 +15,28 @@ namespace Hands.Controls
         : ObservableCollectionExtended<TObject>, IDisposable
     {
         public TGroupKey Key { get; }
-        public TAggregateValue AggregateValue { get; set; }
-        public TFormattedAggregateValue FormattedAggregateValue { get; set; }
+
+        private TAggregateValue aggregateValue;
+        public TAggregateValue AggregateValue
+        {
+            get => aggregateValue;
+            set
+            {
+                aggregateValue = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(AggregateValue)));
+            }
+        }
+
+        private TFormattedAggregateValue formattedAggregateValue;
+        public TFormattedAggregateValue FormattedAggregateValue
+        {
+            get => formattedAggregateValue;
+            set
+            {
+                formattedAggregateValue = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(FormattedAggregateValue)));
+            }
+        }
 
         public ObservableGroupedCollection(
             IGroup<TObject, TKey, TGroupKey> group,
