@@ -82,6 +82,14 @@
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:TransactionWithAccountWithCategory">
                     <ViewCell Height="50">
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="Update"
+                                      CommandParameter="{Binding .}"
+                                      Command="{Binding Source={x:Reference ListViewTransactions}, Path=BindingContext.EditCommand}" />
+                            <MenuItem Text="Delete" IsDestructive="True"
+                                      CommandParameter="{Binding .}"
+                                      Command="{Binding Source={x:Reference ListViewTransactions}, Path=BindingContext.RemoveCommand}" />
+                        </ViewCell.ContextActions>
                         <Grid RowDefinitions="*" ColumnDefinitions="Auto, *, Auto"
                               ColumnSpacing="10" Padding="20, 0, 20, 0">
                             <Grid.GestureRecognizers>

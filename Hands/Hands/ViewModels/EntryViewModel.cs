@@ -207,6 +207,8 @@ namespace Hands.ViewModels
             AddCommand = ReactiveCommand.CreateFromTask(ExecuteAddCommand);
             EditCommand = ReactiveCommand.CreateFromTask<
                 TransactionWithAccountWithCategory>(ExecuteEditCommand);
+            RemoveCommand = ReactiveCommand.CreateFromTask<
+                TransactionWithAccountWithCategory>(ExecuteRemoveCommand);
 
             _cleanUp = new CompositeDisposable(transactionsDisposable);
         }
@@ -241,6 +243,8 @@ namespace Hands.ViewModels
 
         public ReactiveCommand<TransactionWithAccountWithCategory, Unit> EditCommand { get; set; }
 
+        public ReactiveCommand<TransactionWithAccountWithCategory, Unit> RemoveCommand { get; set; }
+
         private async Task ExecuteAddCommand()
             => await Shell.Current.Navigation.PushModalAsync(
                 new NavigationPage(new EntryDetailPage()));
@@ -248,6 +252,15 @@ namespace Hands.ViewModels
         private async Task ExecuteEditCommand(TransactionWithAccountWithCategory transaction)
             => await Shell.Current.Navigation.PushModalAsync(
                 new NavigationPage(new EntryDetailPage(transaction)));
+
+        private async Task ExecuteRemoveCommand(TransactionWithAccountWithCategory transaction)
+        {
+            bool answer = await App.Current.MainPage.DisplayAlert(
+                $"Delete transaction \"{transaction.FormattedAmount}\"?",
+                "", "Delete", "Cancel");
+            if (!answer) return;
+            transactionService.RemoveTransaction(transaction.Transaction);
+        }
 
         private readonly IDisposable _cleanUp;
         public void Dispose() { _cleanUp.Dispose(); }
